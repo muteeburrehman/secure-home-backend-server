@@ -1,0 +1,24 @@
+# Python bytecode
+*.pyc
+*.pyo
+__pycache__/
+
+# Environment variables
+.env
+
+# Virtual environment
+venv/
+env/
+
+# Uploads or generated files
+static/uploads/
+
+# IDE specific files
+.vscode/
+.idea/
+
+# Coverage files
+.coverage
+
+# FastAPI specific
+*.log
