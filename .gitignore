@@ -9,7 +9,7 @@ app/database/app.db
 # Virtual environment
 venv/
 env/
-
+.venv/
 # Uploads or generated files
 static/uploads/
 
