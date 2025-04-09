@@ -5,7 +5,7 @@ __pycache__/
 
 # Environment variables
 .env
-
+app/database/app.db
 # Virtual environment
 venv/
 env/

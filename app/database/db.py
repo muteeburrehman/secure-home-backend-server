@@ -4,16 +4,17 @@ from sqlalchemy.orm import sessionmaker
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env
+# Load environment variables from .env (optional, still good practice)
 load_dotenv()
 
-DATABASE_URL = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('POSTGRES_HOST')}:{os.getenv('POSTGRES_PORT')}/{os.getenv('POSTGRES_DB')}"
+# Use SQLite instead of PostgreSQL
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATABASE_URL = f"sqlite:///{os.path.join(BASE_DIR, 'app.db')}"
 
-engine = create_engine(DATABASE_URL, echo=True)
+engine = create_engine(DATABASE_URL, echo=True, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
-
 
 def get_db():
     db = SessionLocal()
@@ -22,10 +23,9 @@ def get_db():
     finally:
         db.close()
 
-
 def create_tables():
     # Import your models here to ensure they are known to SQLAlchemy
-    from app.models.user import User  # Import your models
+    from app.models.user import User  # Update if you have more models
 
     # Create all tables that haven't been created yet
     Base.metadata.create_all(bind=engine)
