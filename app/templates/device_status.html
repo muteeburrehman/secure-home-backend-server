@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Device Status</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .device {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        .on {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .off {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        h1 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Device Status</h1>
+    <div class="device {% if status %}on{% else %}off{% endif %}">
+        <h2>{{ device_name }}</h2>
+        <p><strong>Home:</strong> {{ home_name }}</p>
+        <p><strong>Status:</strong> {% if status %}ON{% else %}OFF{% endif %}</p>
+        <p><strong>Last Updated:</strong> {{ timestamp }}</p>
+    </div>
+</body>
+</html>

@@ -1,18 +1,26 @@
 from fastapi import FastAPI
-from app.api.routes import router
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 from app.api.routes import router
 from app.api.auth_routes import router as auth_router
 from app.database.db import create_tables
-from app.api.server_info_routes import router as server_info_router  # Import the new router
+from app.api.server_info_routes import router as server_info_router
+from app.api.home_routes import router as home_router
+from app.api.device_routes import router as device_router
+from app.api.schedule_routes import router as schedule_router
+
+
+
 
 # Initialize the FastAPI app
 app = FastAPI()
 
 app.include_router(router)
 app.include_router(auth_router, prefix="/auth")
-app.include_router(server_info_router, prefix="/api")  # Add the new router with prefix
+app.include_router(server_info_router, prefix="/api")
+router.include_router(home_router, prefix="/api")
+router.include_router(device_router, prefix="/api")
+router.include_router(schedule_router, prefix="/api")
 
 # Allow CORS for your Android app
 app.add_middleware(
