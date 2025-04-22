@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Devices for Home {{ home.id }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .device {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        .on {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .off {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        h1 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Devices for {{ home.owner }}'s Home (ID: {{ home.id }})</h1>
+    {% if devices %}
+        {% for device in devices %}
+        <div class="device {% if device.status %}on{% else %}off{% endif %}">
+            <h2>{{ device.name }}</h2>
+            <p><strong>Device ID:</strong> {{ device.id }}</p>
+            <p><strong>Status:</strong> {% if device.status %}ON{% else %}OFF{% endif %}</p>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No devices found for this home.</p>
+    {% endif %}
+</body>
+</html>

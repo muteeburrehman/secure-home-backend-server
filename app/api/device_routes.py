@@ -9,7 +9,7 @@ from app.models.device import Device
 from app.models.home import Home
 
 router = APIRouter()
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="app/templates")
 
 
 # Create a new device for a given home
@@ -68,5 +68,51 @@ def update_device_status(
             "home_name": home.owner,
             "status": device.status,
             "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+    )
+
+@router.get("/homes/{home_id}/devices/{device_id}/status", response_class=HTMLResponse)
+def get_device_status(
+        home_id: int,
+        device_id: int,
+        request: Request,
+        db: Session = Depends(get_db)
+):
+    home = db.query(Home).filter(Home.id == home_id).first()
+    if not home:
+        raise HTTPException(status_code=404, detail="Home not found")
+
+    device = db.query(Device).filter(Device.id == device_id, Device.home_id == home_id).first()
+    if not device:
+        raise HTTPException(status_code=404, detail="Device not found")
+
+    return templates.TemplateResponse(
+        "device_status.html",
+        {
+            "request": request,
+            "device_name": device.name,
+            "home_name": home.owner,
+            "status": device.status,
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+    )
+
+@router.get("/homes/{home_id}/devices/html", response_class=HTMLResponse)
+def list_home_devices_html(home_id: int, request: Request, db: Session = Depends(get_db)):
+    """
+    Render all devices under a specific home using HTML.
+    """
+    home = db.query(Home).filter(Home.id == home_id).first()
+    if not home:
+        raise HTTPException(status_code=404, detail="Home not found")
+
+    devices = db.query(Device).filter(Device.home_id == home_id).all()
+
+    return templates.TemplateResponse(
+        "devices_by_home.html",
+        {
+            "request": request,
+            "devices": devices,
+            "home": home
         }
     )
